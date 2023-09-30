@@ -1,22 +1,76 @@
-[gd_scene load_steps=5 format=3 uid="uid://ddirl4wdyniba"]
+[gd_scene load_steps=7 format=3 uid="uid://ddirl4wdyniba"]
 
 [ext_resource type="Texture2D" uid="uid://df0khfkvgjpeu" path="res://sprites/purple.png" id="1_3puaq"]
 [ext_resource type="Script" path="res://scripts/Level.cs" id="1_gbukn"]
 [ext_resource type="PackedScene" uid="uid://b06qh2e0vlpr2" path="res://prefabs/player.tscn" id="2_661gq"]
 [ext_resource type="PackedScene" uid="uid://dk2e8bgrackcv" path="res://prefabs/maze1.tscn" id="4_aruug"]
 
+[sub_resource type="LabelSettings" id="LabelSettings_wrqac"]
+font_size = 64
+
+[sub_resource type="LabelSettings" id="LabelSettings_87hsh"]
+font_size = 32
+
 [node name="Level1" type="Node2D"]
 script = ExtResource("1_gbukn")
-
-[node name="Background" type="TextureRect" parent="."]
-offset_right = 1152.0
-offset_bottom = 648.0
-texture = ExtResource("1_3puaq")
-stretch_mode = 1
 
 [node name="Player" parent="." instance=ExtResource("2_661gq")]
 position = Vector2(574, 323)
 
 [node name="Maze" parent="." instance=ExtResource("4_aruug")]
-z_index = -10
+z_index = -50
 position = Vector2(551, 293)
+
+[node name="Background" type="Node" parent="."]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Background"]
+layer = -10
+
+[node name="Background" type="TextureRect" parent="Background/CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_3puaq")
+stretch_mode = 1
+
+[node name="lblStart" type="Label" parent="Background"]
+z_index = -1
+offset_left = 469.0
+offset_top = 193.0
+offset_right = 659.0
+offset_bottom = 284.0
+text = "Start"
+label_settings = SubResource("LabelSettings_wrqac")
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="lblEnd" type="Label" parent="Background"]
+z_index = -1
+offset_left = 954.0
+offset_top = -334.0
+offset_right = 1144.0
+offset_bottom = -243.0
+text = "End"
+label_settings = SubResource("LabelSettings_wrqac")
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="lblTutorial" type="Label" parent="Background"]
+z_index = -1
+offset_left = 4.0
+offset_top = 400.0
+offset_right = 525.0
+offset_bottom = 640.0
+text = "Rules:
+-Use arrow keys or wasd to move.
+-Go from the Start to the End.
+-You will go back to the Start if
+	you go outside of the Maze."
+label_settings = SubResource("LabelSettings_87hsh")
+vertical_alignment = 1
+
+[connection signal="body_exited" from="Maze" to="." method="OnMazeBodyExited"]
